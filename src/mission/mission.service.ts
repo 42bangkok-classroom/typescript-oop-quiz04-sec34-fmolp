@@ -27,13 +27,15 @@ export class MissionService {
   findAll(): IMission[] {
     const filePath = path.join(__dirname, '../../data/missions.json');
     const raw = fs.readFileSync(filePath, 'utf-8');
-    const missions: IMission[] = JSON.parse(raw);
+    const missions = JSON.parse(raw) as IMission[];
     return missions.map((m) => {
       let durationDays = -1;
       if (m.endDate) {
         const start = new Date(m.startDate);
         const end = new Date(m.endDate);
-        durationDays = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+        durationDays = Math.floor(
+          (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
+        );
       }
       return { ...m, durationDays };
     });
